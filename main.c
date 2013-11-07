@@ -19,7 +19,7 @@ __IO uint8_t UserButtonPressed = 0x00;
 static void LED_task(void *pvParameters);
 static void button_task(void *pvParameters);
 
-
+xTaskHandle *pvLEDTask;
 void EXTI0_IRQHandler(void)
 {
   UserButtonPressed = 0x01;
@@ -57,7 +57,7 @@ int main(void)
   xTaskCreate(LED_task,
              (signed portCHAR *) "LED Flash",
              512 /* stack size */, NULL,
-             tskIDLE_PRIORITY + 5, NULL);
+             tskIDLE_PRIORITY + 5,  pvLEDTask );
 
   /* Start running the tasks. */
   vTaskStartScheduler(); 

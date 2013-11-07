@@ -1,8 +1,19 @@
 #include "RTC_set.h"
-
+#include "main.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "stm32f4xx_conf.h"
+extern xTaskHandle *pvLEDTask;
+void RTC_Alarm_IRQHandler()
+{
+  if(RTC_GetITStatus(RTC_IT_ALRA) != RESET)
+  {
+    vTaskSuspend( pvLEDTask );
+
+    RTC_ClearITPendingBit(RTC_IT_ALRA);
+    EXTI_ClearITPendingBit(EXTI_Line17);
+  }
+}
 
 static void initialize_RTC(void)
 {
