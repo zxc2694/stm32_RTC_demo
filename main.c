@@ -59,12 +59,6 @@ int main(void)
              512 /* stack size */, NULL,
              tskIDLE_PRIORITY + 5, NULL);
 
-  /* Create a task to button check. */
-  xTaskCreate(button_task,
-             (signed portCHAR *) "User Button",
-             512 /* stack size */, NULL,
-             tskIDLE_PRIORITY + 5, NULL);
-
   /* Start running the tasks. */
   vTaskStartScheduler(); 
 
@@ -93,32 +87,8 @@ static void LED_task(void *pvParameters)
   }
 }
 
-static void button_task(void *pvParameters)
-{
-	while (1)
-	{
-		    /* Waiting User Button is pressed */
-    		    if (UserButtonPressed == 0x01)
-    		    {
-      		    	/* Toggle LED4 */
-      			STM_EVAL_LEDToggle(LED4);
-      			vTaskDelay(100);
-      			/* Toggle LED3 */
-      			STM_EVAL_LEDToggle(LED3);
-      			vTaskDelay(100);
-    		    }
-		    /* Waiting User Button is Released */
-    		    while (STM_EVAL_PBGetState(BUTTON_USER) == Bit_SET);
-		    UserButtonPressed = 0x00;
-	}
-}
 
 
-/**
-  * @brief  This function handles the test program fail.
-  * @param  None
-  * @retval None
-  */
 void Fail_Handler(void)
 {
   /* Erase last sector */ 
