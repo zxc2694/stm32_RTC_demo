@@ -12,6 +12,12 @@ void RTC_Alarm_IRQHandler()
 
     RTC_ClearITPendingBit(RTC_IT_ALRA);
     EXTI_ClearITPendingBit(EXTI_Line17);
+    STM_EVAL_LEDOff(LED4);
+    STM_EVAL_LEDOff(LED3);
+    STM_EVAL_LEDOff(LED5);
+    STM_EVAL_LEDOff(LED6);
+    vTaskResume( pvLEDTask );
+    
   }
 }
 
