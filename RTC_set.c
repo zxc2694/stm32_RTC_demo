@@ -35,9 +35,11 @@ static void initialize_RTC(void)
   RCC_RTCCLKCmd(ENABLE);                                /* Enable the RTC Clock */
   RTC_WaitForSynchro();                                 /* Wait for RTC APB registers synchronisation */
 
-  /* Configure the RTC data register and RTC prescaler */
-  RTC_InitStructure.RTC_AsynchPrediv = 0x7F;
-  RTC_InitStructure.RTC_SynchPrediv = 0xF9;
+  /* Configure the RTC data register and RTC prescaler 
+  Make ck_spre 1Hz
+  */
+  RTC_InitStructure.RTC_AsynchPrediv = 127;
+  RTC_InitStructure.RTC_SynchPrediv = 249;
   RTC_InitStructure.RTC_HourFormat = RTC_HourFormat_24;
   RTC_Init(&RTC_InitStructure);
 }
@@ -81,7 +83,7 @@ static void set_alarm_time(void)
   RTC_AlarmCmd(RTC_Alarm_A, DISABLE);   /* disable before setting or cann't write */
 
   /* set alarm time 8:30:0 everyday */
-  RTC_AlarmStructure.RTC_AlarmTime.RTC_H12     = 0x00;
+  RTC_AlarmStructure.RTC_AlarmTime.RTC_H12     = RTC_H12_AM;
   RTC_AlarmStructure.RTC_AlarmTime.RTC_Hours   = 8;
   RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes = 30;
   RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds = 0;
