@@ -16,7 +16,6 @@ void RTC_Alarm_IRQHandler()
     STM_EVAL_LEDOff(LED3);
     STM_EVAL_LEDOff(LED5);
     STM_EVAL_LEDOff(LED6);
-    vTaskResume( pvLEDTask );
     
   }
 }
@@ -48,7 +47,7 @@ static void setting_time(void)
 {
   /* set 8:29:55 */
   RTC_TimeTypeDef RTC_TimeStruct;
-  RTC_TimeStruct.RTC_Hours = 0x8;
+  RTC_TimeStruct.RTC_Hours = 0x08;
   RTC_TimeStruct.RTC_Minutes = 0x29;
   RTC_TimeStruct.RTC_Seconds = 0x55;
 
@@ -84,7 +83,7 @@ static void set_alarm_time(void)
 
   /* set alarm time 8:30:0 everyday */
   RTC_AlarmStructure.RTC_AlarmTime.RTC_H12     = RTC_H12_AM;
-  RTC_AlarmStructure.RTC_AlarmTime.RTC_Hours   = 0x8;
+  RTC_AlarmStructure.RTC_AlarmTime.RTC_Hours   = 0x08;
   RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes = 0x30;
   RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds = 0x0;
   RTC_AlarmStructure.RTC_AlarmDateWeekDay = 0x31; // Nonspecific
