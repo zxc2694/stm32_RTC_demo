@@ -105,8 +105,9 @@ static void set_alarm_time(void)
 }
 void autowakeup_config()
 {
+  RTC_WakeUpCmd(DISABLE);
   RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_16bits);//configure 2
-  RTC_SetWakeUpCounter(0x0001);//2 second 
+  RTC_SetWakeUpCounter(0x0000);//1 second 
   RTC_WakeUpCmd(ENABLE);
 }
 void enable_autowakeup_interrupt()
