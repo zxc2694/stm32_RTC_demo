@@ -15,11 +15,18 @@ void RTC_Alarm_IRQHandler()
     STM_EVAL_LEDOff(LED4);
     STM_EVAL_LEDOff(LED3);
     STM_EVAL_LEDOff(LED5);
-    STM_EVAL_LEDOff(LED6);
     
   }
 }
-
+void RTC_WKUP_IRQHandler(void)
+{
+  if(RTC_GetITStatus(RTC_IT_WUT) != RESET)
+  {
+    RTC_ClearITPendingBit(RTC_IT_WUT);
+    EXTI_ClearITPendingBit(EXTI_Line22);
+    STM_EVAL_LEDToggle(LED6);
+  }
+}
 static void initialize_RTC(void)
 {
   RTC_InitTypeDef RTC_InitStructure;
@@ -102,6 +109,30 @@ void autowakeup_config()
   RTC_SetWakeUpCounter(0x0001);//2 second 
   RTC_WakeUpCmd(ENABLE);
 }
+void enable_autowakeup_interrupt()
+{
+  NVIC_InitTypeDef NVIC_InitStructure;
+  EXTI_InitTypeDef EXTI_InitStructure;
+  /* Enable the RTC Interrupt */
+  NVIC_InitStructure.NVIC_IRQChannel = RTC_WKUP_IRQn;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&NVIC_InitStructure);
+
+  /* EXTI configuration */
+  EXTI_ClearITPendingBit(EXTI_Line22);
+  EXTI_InitStructure.EXTI_Line = EXTI_Line22;
+  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+  EXTI_Init(&EXTI_InitStructure);
+  
+  RTC_ClearITPendingBit(RTC_IT_WUT);
+  EXTI_ClearITPendingBit(EXTI_Line22);
+  RTC_ITConfig(RTC_IT_WUT, ENABLE);
+}
+
 
 void RTC_setting()
 {
@@ -110,5 +141,8 @@ void RTC_setting()
     initialize_RTC_alarm();
     set_alarm_time();
     autowakeup_config();
+    enable_autowakeup_interrupt();
+  
+    
 
 }
