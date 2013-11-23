@@ -96,6 +96,12 @@ static void set_alarm_time(void)
   RTC_AlarmCmd(RTC_Alarm_A, ENABLE);
   RTC_ClearFlag(RTC_FLAG_ALRAF);
 }
+void autowakeup_config()
+{
+  RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_16bits);//configure 2
+  RTC_SetWakeUpCounter(0x0001);//2 second 
+  RTC_WakeUpCmd(ENABLE);
+}
 
 void RTC_setting()
 {
@@ -103,5 +109,6 @@ void RTC_setting()
     setting_time();
     initialize_RTC_alarm();
     set_alarm_time();
+    autowakeup_config();
 
 }
