@@ -20,11 +20,18 @@ void RTC_Alarm_IRQHandler()
 }
 void RTC_WKUP_IRQHandler(void)
 {
+  RTC_TimeTypeDef RTC_TimeStruct;
   if(RTC_GetITStatus(RTC_IT_WUT) != RESET)
   {
     RTC_ClearITPendingBit(RTC_IT_WUT);
     EXTI_ClearITPendingBit(EXTI_Line22);
     STM_EVAL_LEDToggle(LED6);
+    
+    RTC_SetTime(RTC_Format_BIN, &RTC_TimeStruct);
+
+    showCalendar_time(RTC_TimeStruct.RTC_Hours,
+                      RTC_TimeStruct.RTC_Minutes,
+                      RTC_TimeStruct.RTC_Seconds);
   }
 }
 static void initialize_RTC(void)
