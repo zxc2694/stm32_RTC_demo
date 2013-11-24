@@ -10,7 +10,7 @@
 #define ALLTEST_FAIL               0x55555555
 
 static void LED_task(void *pvParameters);
-
+static void LCD_display_task(void *pvParameters);
 xTaskHandle *pvLEDTask;
 
 
@@ -31,7 +31,11 @@ int main(void)
   STM_EVAL_LEDOff(LED5);
   STM_EVAL_LEDOff(LED6);
     
-
+  /* Create a task to display something in the LCD. */
+    xTaskCreate(LCD_display_task,
+             (signed portCHAR *) "Liquid Crystal Display",
+             512 /* stack size */, NULL,
+             tskIDLE_PRIORITY + 5, NULL);
 
   /* Create a task to flash the LED. */
   xTaskCreate(LED_task,
@@ -43,6 +47,25 @@ int main(void)
   vTaskStartScheduler(); 
 
   return 0;
+}
+
+static void LCD_display_task(void *pvParameters)
+{
+
+  int hour=23;
+  int min=45;
+  int sec=50;
+  int year=13;
+  int month=11;
+  int data=24;
+  LCD_GPIO_Init();
+  Init_LCD();     //LCD  initialization       
+
+  //LCD_display(1,1,"0123456789");  //(row,column,value)--> display form (1,1) to (1,10)
+  
+  showCalendar_day(year,month,data);
+  showCalendar_time(hour,min,sec);    
+  while(1);
 }
 
 static void LED_task(void *pvParameters)
