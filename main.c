@@ -54,13 +54,13 @@ static void LED_task(void *pvParameters)
   {    
       /* Toggle LED3 */
       STM_EVAL_LEDToggle(LED3);
-      vTaskDelay(10);
+      vTaskDelay(200);
       /* Toggle LED4 */
       STM_EVAL_LEDToggle(LED4);
-      vTaskDelay(10);
+      vTaskDelay(200);
       /* Toggle LED5 */
       STM_EVAL_LEDToggle(LED5);
-      vTaskDelay(10);
+      vTaskDelay(200);
       /* Toggle LED6 */
   }
 }
