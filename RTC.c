@@ -27,7 +27,7 @@ void RTC_WKUP_IRQHandler(void)
     EXTI_ClearITPendingBit(EXTI_Line22);
     STM_EVAL_LEDToggle(LED6);
     
-    RTC_SetTime(RTC_Format_BIN, &RTC_TimeStruct);
+    RTC_GetTime(RTC_Format_BIN, &RTC_TimeStruct);
 
     showCalendar_time(RTC_TimeStruct.RTC_Hours,
                       RTC_TimeStruct.RTC_Minutes,
