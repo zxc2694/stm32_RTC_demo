@@ -323,4 +323,16 @@ void STM_EVAL_COMInit(COM_TypeDef COM, USART_InitTypeDef* USART_InitStruct)
 }
 //END COMM PORT
 
+void LCD_GPIO_Init(void)
+{
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD,ENABLE);
+
+  GPIO_InitTypeDef G;
+  G.GPIO_Pin=GPIO_Pin_All;
+  G.GPIO_Speed=GPIO_Speed_50MHz;
+  G.GPIO_Mode=GPIO_Mode_OUT;
+  G.GPIO_OType=GPIO_OType_PP;
+  G.GPIO_PuPd=GPIO_PuPd_UP;
+  GPIO_Init(GPIOD,&G);
+}
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

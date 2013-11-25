@@ -1,7 +1,7 @@
 #include "FreeRTOSConfig.h"
 #include "FreeRTOS.h"
 #include "task.h"
-#include "RTC_set.h"
+#include "RTC.h"
 #include "main.h"
 #include "stm32f4xx_conf.h"
 
@@ -9,24 +9,9 @@
 #define ALLTEST_PASS               0x00000000
 #define ALLTEST_FAIL               0x55555555
 
-
-uint16_t PrescalerValue = 0;
-
-__IO uint32_t TimingDelay;
-__IO uint8_t UserButtonPressed = 0x00;
-
-
 static void LED_task(void *pvParameters);
-static void button_task(void *pvParameters);
-
-
-void EXTI0_IRQHandler(void)
-{
-  UserButtonPressed = 0x01;
-  
-  /* Clear the EXTI line pending bit */
-  EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
-}
+static void LCD_display_task(void *pvParameters);
+xTaskHandle *pvLEDTask;
 
 
 
@@ -34,10 +19,6 @@ int main(void)
 {
   RTC_setting();
   
-  
-  /* Initialize LEDs and User_Button on STM32F4-Discovery --------------------*/
-  STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_EXTI); 
-
   /* Initialize LEDs to be managed by GPIO */
   STM_EVAL_LEDInit(LED4);
   STM_EVAL_LEDInit(LED3);
@@ -50,19 +31,45 @@ int main(void)
   STM_EVAL_LEDOff(LED5);
   STM_EVAL_LEDOff(LED6);
     
-  /* Reset UserButton_Pressed variable */
-  UserButtonPressed = 0x00;
+  /* Create a task to display something in the LCD. */
+    xTaskCreate(LCD_display_task,
+             (signed portCHAR *) "Liquid Crystal Display",
+             512 /* stack size */, NULL,
+             tskIDLE_PRIORITY + 5, NULL);
 
   /* Create a task to flash the LED. */
   xTaskCreate(LED_task,
              (signed portCHAR *) "LED Flash",
              512 /* stack size */, NULL,
+<<<<<<< HEAD
              tskIDLE_PRIORITY + 5, NULL);
+=======
+             tskIDLE_PRIORITY + 5,  pvLEDTask );
+>>>>>>> b1474297b3f757b01033c18a439e54f6e9400791
 
   /* Start running the tasks. */
   vTaskStartScheduler(); 
 
   return 0;
+}
+
+static void LCD_display_task(void *pvParameters)
+{
+
+  int hour=23;
+  int min=45;
+  int sec=50;
+  int year=13;
+  int month=11;
+  int data=24;
+  LCD_GPIO_Init();
+  Init_LCD();     //LCD  initialization       
+
+  //LCD_display(1,1,"0123456789");  //(row,column,value)--> display form (1,1) to (1,10)
+  
+  showCalendar_day(year,month,data);
+  showCalendar_time(hour,min,sec);    
+  while(1);
 }
 
 static void LED_task(void *pvParameters)
@@ -74,20 +81,21 @@ static void LED_task(void *pvParameters)
   {    
       /* Toggle LED3 */
       STM_EVAL_LEDToggle(LED3);
-      vTaskDelay(10);
+      vTaskDelay(200);
       /* Toggle LED4 */
       STM_EVAL_LEDToggle(LED4);
-      vTaskDelay(10);
+      vTaskDelay(200);
       /* Toggle LED5 */
       STM_EVAL_LEDToggle(LED5);
-      vTaskDelay(10);
+      vTaskDelay(200);
       /* Toggle LED6 */
-      STM_EVAL_LEDToggle(LED6);
-      vTaskDelay(10);
   }
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> b1474297b3f757b01033c18a439e54f6e9400791
 
 void Fail_Handler(void)
 {

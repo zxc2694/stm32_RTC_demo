@@ -3,7 +3,7 @@ BIN_IMAGE=STM32F4-Discovery_Demo.bin
 
 CC=arm-none-eabi-gcc
 OBJCOPY=arm-none-eabi-objcopy
-ARCH=CM3
+ARCH=CM4F
 
 LIB_STM = ./libstm
 FREERTOS_SRC = $(LIB_STM)/FreeRTOS
@@ -16,7 +16,7 @@ C_LIB= $(TOOLCHAIN_PATH)/lib/thumb2
 CFLAGS=-g -O2 -mlittle-endian -mthumb
 CFLAGS+=-mcpu=cortex-m4
 CFLAGS+=-ffreestanding -nostdlib
-
+CFLAGS+= -mfloat-abi=softfp -mfpu=fpv4-sp-d16
 
 # to run from FLASH
 CFLAGS+=-Wl,-T,stm32_flash.ld
@@ -40,7 +40,7 @@ CFLAGS+=-I$(FREERTOS_INC)
 CFLAGS+=-I$(FREERTOS_PORT_INC)
 
 #Source Files
-SRC += system_stm32f4xx.c startup_stm32f4xx.s string.c RTC_set.c $(LIB_STM)/Utilities/STM32F4-Discovery/stm32f4_discovery.c \
+SRC += system_stm32f4xx.c startup_stm32f4xx.s string.c RTC.c lcd.c $(LIB_STM)/Utilities/STM32F4-Discovery/stm32f4_discovery.c \
 		$(FREERTOS_SRC)/tasks.c $(FREERTOS_SRC)/list.c $(FREERTOS_SRC)/portable/MemMang/heap_1.c \
 		$(FREERTOS_SRC)/portable/GCC/ARM_$(ARCH)/port.c 
 
