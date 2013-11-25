@@ -52,12 +52,12 @@ int main(void)
 static void LCD_display_task(void *pvParameters)
 {
 
-  int hour=23;
-  int min=45;
-  int sec=50;
-  int year=13;
-  int month=11;
-  int data=24;
+  uint8_t hour=23;
+  uint8_t min=45;
+  uint8_t sec=50;
+  uint8_t year=13;
+  uint8_t month=11;
+  uint8_t data=24;
   LCD_GPIO_Init();
   Init_LCD();     //LCD  initialization       
 

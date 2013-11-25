@@ -61,7 +61,7 @@ void LCD_display(char row,char column, char display[])
 }
 
 
-void showCalendar_time(int hour, int min, int sec)
+void showCalendar_time(uint8_t hour, uint8_t min, uint8_t sec)
 {
 	vTaskDelay(5);
 	LCD_CMD(0xC1);			//(row,column)=(2,2)
@@ -95,7 +95,7 @@ void showCalendar_time(int hour, int min, int sec)
 	vTaskDelay(5);
 
 }
-void showCalendar_day(int year, int month, int data)
+void showCalendar_day(uint8_t  year, uint8_t month, uint8_t data)
 {
 	vTaskDelay(5);
         LCD_CMD(0x80);	
