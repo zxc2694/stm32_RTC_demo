@@ -41,11 +41,7 @@ int main(void)
   xTaskCreate(LED_task,
              (signed portCHAR *) "LED Flash",
              512 /* stack size */, NULL,
-<<<<<<< HEAD
-             tskIDLE_PRIORITY + 5, NULL);
-=======
              tskIDLE_PRIORITY + 5,  pvLEDTask );
->>>>>>> b1474297b3f757b01033c18a439e54f6e9400791
 
   /* Start running the tasks. */
   vTaskStartScheduler(); 
@@ -92,10 +88,7 @@ static void LED_task(void *pvParameters)
   }
 }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> b1474297b3f757b01033c18a439e54f6e9400791
 
 void Fail_Handler(void)
 {
