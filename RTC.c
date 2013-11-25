@@ -64,6 +64,19 @@ static void setting_time(void)
   RTC_SetTime(RTC_Format_BCD, &RTC_TimeStruct);
 
 }
+static void setting_date(void)
+{
+  /* set 8:29:55 */
+  RTC_DateTypeDef RTC_DateStruct;
+  RTC_DateStruct.RTC_WeekDay = 0x02;
+  RTC_DateStruct.RTC_Month = 0x11;
+  RTC_DateStruct.RTC_Date = 0x26;
+  RTC_DateStruct.RTC_Year = 0x13;
+
+  RTC_SetDate(RTC_Format_BCD, &RTC_DateStruct);
+
+}
+
 static void initialize_RTC_alarm(void)
 {
   EXTI_InitTypeDef EXTI_InitStructure;
@@ -142,6 +155,7 @@ void RTC_setting()
 {
     initialize_RTC();
     setting_time();
+    setting_date();
     initialize_RTC_alarm();
     set_alarm_time();
     autowakeup_config();

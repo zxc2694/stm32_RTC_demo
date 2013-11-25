@@ -52,6 +52,7 @@ int main(void)
 static void LCD_display_task(void *pvParameters)
 {
   RTC_TimeTypeDef RTC_TimeStruct;
+  RTC_DateTypeDef RTC_DateStruct;
   int hour=23;
   int min=45;
   int sec=50;
@@ -68,10 +69,13 @@ static void LCD_display_task(void *pvParameters)
   while(1){
 
     RTC_GetTime(RTC_Format_BIN, &RTC_TimeStruct);
-
+    RTC_GetDate(RTC_Format_BIN, &RTC_DateStruct);
     showCalendar_time((uint8_t)RTC_TimeStruct.RTC_Hours,
                       (uint8_t)RTC_TimeStruct.RTC_Minutes,
                       (uint8_t)RTC_TimeStruct.RTC_Seconds);
+    showCalendar_day((uint8_t)RTC_DateStruct.RTC_Year,
+                      (uint8_t)RTC_DateStruct.RTC_Month,
+                      (uint8_t)RTC_DateStruct.RTC_Date);
 
   }
 }
