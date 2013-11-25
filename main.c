@@ -64,7 +64,7 @@ static void LCD_display_task(void *pvParameters)
     showCalendar_time((uint8_t)RTC_TimeStruct.RTC_Hours,
                       (uint8_t)RTC_TimeStruct.RTC_Minutes,
                       (uint8_t)RTC_TimeStruct.RTC_Seconds);
-    showCalendar_day((uint8_t)RTC_DateStruct.RTC_Year,
+    showCalendar_date((uint8_t)RTC_DateStruct.RTC_Year,
                       (uint8_t)RTC_DateStruct.RTC_Month,
                       (uint8_t)RTC_DateStruct.RTC_Date);
 

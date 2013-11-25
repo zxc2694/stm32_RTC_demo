@@ -81,7 +81,7 @@ void showCalendar_time(int hour, int min, int sec)
 	vTaskDelay(5);
 
 }
-void showCalendar_day(int year, int month, int data)
+void showCalendar_date(int year, int month, int data)
 {
 	vTaskDelay(5);
     LCD_CMD(0x80);	
