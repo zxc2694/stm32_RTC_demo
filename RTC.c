@@ -95,7 +95,7 @@ static void set_alarm_time(void)
   RTC_AlarmStructure.RTC_AlarmTime.RTC_H12     = RTC_H12_AM;
   RTC_AlarmStructure.RTC_AlarmTime.RTC_Hours   = 0x08;
   RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes = 0x30;
-  RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds = 0x0;
+  RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds = 0x10;
   RTC_AlarmStructure.RTC_AlarmDateWeekDay = 0x31; // Nonspecific
   RTC_AlarmStructure.RTC_AlarmDateWeekDaySel = RTC_AlarmDateWeekDaySel_Date;
   RTC_AlarmStructure.RTC_AlarmMask = RTC_AlarmMask_DateWeekDay; // Everyday 
