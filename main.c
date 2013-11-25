@@ -32,7 +32,7 @@ int main(void)
   STM_EVAL_LEDOff(LED6);
     
   /* Create a task to display something in the LCD. */
-    xTaskCreate(LCD_display_task,
+  xTaskCreate(LCD_display_task,
              (signed portCHAR *) "Liquid Crystal Display",
              512 /* stack size */, NULL,
              tskIDLE_PRIORITY + 5, NULL);
@@ -51,21 +51,33 @@ int main(void)
 
 static void LCD_display_task(void *pvParameters)
 {
+  RTC_TimeTypeDef RTC_TimeStruct;
+  RTC_DateTypeDef RTC_DateStruct;
 
+<<<<<<< HEAD
   uint8_t hour=23;
   uint8_t min=45;
   uint8_t sec=50;
   uint8_t year=13;
   uint8_t month=11;
   uint8_t data=24;
+=======
+>>>>>>> 9efbcffb81682db9d1453d562481f23f9984fb42
   LCD_GPIO_Init();
   Init_LCD();     //LCD  initialization       
+ 
+  while(1){
 
-  //LCD_display(1,1,"0123456789");  //(row,column,value)--> display form (1,1) to (1,10)
-  
-  showCalendar_day(year,month,data);
-  showCalendar_time(hour,min,sec);    
-  while(1);
+    RTC_GetTime(RTC_Format_BIN, &RTC_TimeStruct);
+    RTC_GetDate(RTC_Format_BIN, &RTC_DateStruct);
+    showCalendar_time((uint8_t)RTC_TimeStruct.RTC_Hours,
+                      (uint8_t)RTC_TimeStruct.RTC_Minutes,
+                      (uint8_t)RTC_TimeStruct.RTC_Seconds);
+    showCalendar_date((uint8_t)RTC_DateStruct.RTC_Year,
+                      (uint8_t)RTC_DateStruct.RTC_Month,
+                      (uint8_t)RTC_DateStruct.RTC_Date);
+
+  }
 }
 
 static void LED_task(void *pvParameters)

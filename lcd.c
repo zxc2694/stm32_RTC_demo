@@ -45,20 +45,6 @@ void Init_LCD()
 	vTaskDelay(10);
 }
 
-void LCD_display(char row,char column, char display[])
-{
-	char *str;
-	uint16_t address;	
-	str=display;
-	address=0x0080+0x0040*(row-1)+(column-1);	
-	LCD_CMD(address);
-	vTaskDelay(10);		//delay 10m sec
-	while(*str!=0){
-	LCD_DATA(*str++);
-	vTaskDelay(5);		//delay 5m sec  
-	}     			
-	str=display;
-}
 
 
 void showCalendar_time(uint8_t hour, uint8_t min, uint8_t sec)
@@ -95,10 +81,14 @@ void showCalendar_time(uint8_t hour, uint8_t min, uint8_t sec)
 	vTaskDelay(5);
 
 }
+<<<<<<< HEAD
 void showCalendar_day(uint8_t  year, uint8_t month, uint8_t data)
+=======
+void showCalendar_date(int year, int month, int data)
+>>>>>>> 9efbcffb81682db9d1453d562481f23f9984fb42
 {
 	vTaskDelay(5);
-        LCD_CMD(0x80);	
+    LCD_CMD(0x80);	
 	vTaskDelay(5);		
 	LCD_DATA(0x32);			//'2'		
 	vTaskDelay(5);
@@ -127,7 +117,7 @@ void showCalendar_day(uint8_t  year, uint8_t month, uint8_t data)
 	vTaskDelay(5);
 	
 	char i;
-        for(i=0;i<8;i++)		//make 'year' chinese word
+    for(i=0;i<8;i++)		//make 'year' chinese word
 	{
 		LCD_CMD(0x40+i);	
 		vTaskDelay(5);

@@ -4,6 +4,7 @@
 #include "task.h"
 #include "stm32f4xx_conf.h"
 extern xTaskHandle *pvLEDTask;
+
 void RTC_Alarm_IRQHandler()
 {
   if(RTC_GetITStatus(RTC_IT_ALRA) != RESET)
@@ -20,20 +21,15 @@ void RTC_Alarm_IRQHandler()
 }
 void RTC_WKUP_IRQHandler(void)
 {
-  RTC_TimeTypeDef RTC_TimeStruct;
+ 
   if(RTC_GetITStatus(RTC_IT_WUT) != RESET)
   {
     RTC_ClearITPendingBit(RTC_IT_WUT);
     EXTI_ClearITPendingBit(EXTI_Line22);
     STM_EVAL_LEDToggle(LED6);
-    
-    RTC_GetTime(RTC_Format_BIN, &RTC_TimeStruct);
-
-    showCalendar_time(RTC_TimeStruct.RTC_Hours,
-                      RTC_TimeStruct.RTC_Minutes,
-                      RTC_TimeStruct.RTC_Seconds);
   }
 }
+
 static void initialize_RTC(void)
 {
   RTC_InitTypeDef RTC_InitStructure;
@@ -68,6 +64,19 @@ static void setting_time(void)
   RTC_SetTime(RTC_Format_BCD, &RTC_TimeStruct);
 
 }
+static void setting_date(void)
+{
+  /* set 8:29:55 */
+  RTC_DateTypeDef RTC_DateStruct;
+  RTC_DateStruct.RTC_WeekDay = 0x02;
+  RTC_DateStruct.RTC_Month = 0x11;
+  RTC_DateStruct.RTC_Date = 0x26;
+  RTC_DateStruct.RTC_Year = 0x13;
+
+  RTC_SetDate(RTC_Format_BCD, &RTC_DateStruct);
+
+}
+
 static void initialize_RTC_alarm(void)
 {
   EXTI_InitTypeDef EXTI_InitStructure;
@@ -99,7 +108,7 @@ static void set_alarm_time(void)
   RTC_AlarmStructure.RTC_AlarmTime.RTC_H12     = RTC_H12_AM;
   RTC_AlarmStructure.RTC_AlarmTime.RTC_Hours   = 0x08;
   RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes = 0x30;
-  RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds = 0x0;
+  RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds = 0x10;
   RTC_AlarmStructure.RTC_AlarmDateWeekDay = 0x31; // Nonspecific
   RTC_AlarmStructure.RTC_AlarmDateWeekDaySel = RTC_AlarmDateWeekDaySel_Date;
   RTC_AlarmStructure.RTC_AlarmMask = RTC_AlarmMask_DateWeekDay; // Everyday 
@@ -146,6 +155,7 @@ void RTC_setting()
 {
     initialize_RTC();
     setting_time();
+    setting_date();
     initialize_RTC_alarm();
     set_alarm_time();
     autowakeup_config();
